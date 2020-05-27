@@ -44,6 +44,12 @@ class ISBN {
         $matches = array();
         if (preg_match_all($regex, $string, $matches)) {
             $isbn_string = "";
+            echo "<div style='padding: 5px; margin: 5px; width: 1080px; height: auto; border: 2px solid'>";
+            echo "<div style='padding: 5px; margin: 5px; width: 700px; height: auto; border: 2px solid green'>";
+            echo $string;
+            echo "</div>";
+            var_dump($matches[0]);
+            echo "</div>";
             foreach ($matches[0] as $substring) {
                 for ($counter = 0; $counter < strlen($substring); $counter++) is_numeric($substring[$counter]) ? $isbn_string .= $substring[$counter] : NULL;
             }
