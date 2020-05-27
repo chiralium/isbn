@@ -5,6 +5,10 @@ class ISBN {
     public $type = null;
     public $isbn_string = null;
 
+    /**
+     * ISBN constructor.
+     * @param $string
+     */
     function __construct($string) {
         $this->extract_isbn($string);
         $this->type = strlen($this->isbn_string);
@@ -56,6 +60,10 @@ class Book {
 
     public $ISBN = null;
 
+    /**
+     * Book constructor.
+     * @param $result_set
+     */
     function __construct($result_set) {
         $this->id = $result_set->id;
         $this->title = $result_set->title_ru;
