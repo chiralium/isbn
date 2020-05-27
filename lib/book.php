@@ -1,6 +1,11 @@
 <?php
+
+/**
+ * Class ISBN
+ */
 class ISBN {
     public $checksum = null;
+    private $sum = null;
     public $is_valid = null;
     public $type = null;
     public $isbn_string = null;
@@ -22,7 +27,7 @@ class ISBN {
     }
 
     private function validate() {
-        $this->is_valid = (0 === ($this->checksum % 11)) ? true : false;
+        $this->is_valid = (($this->sum + $this->checksum) % 11) == 0;
     }
 
     private function calc_checksum() {
@@ -30,11 +35,12 @@ class ISBN {
         for ($i = 0; $i <= $this->type; $i++) {
             $checksum += (int)($this->isbn_string[$i]) * ($this->type - $i);
         }
-        $this->checksum = $checksum;
+        $this->checksum = 11 - $checksum % 11;
+        $this->sum = $checksum;
     }
 
     private function extract_isbn($string) {
-        $regex = '~([0-9]+)((.)|(?:.))([0-9]+)~';
+        $regex = '~([0-9]+)((.+)|(?:.+))([0-9]+)~';
         $matches = array();
         if (preg_match_all($regex, $string, $matches)) {
             $isbn_string = "";
@@ -46,6 +52,9 @@ class ISBN {
     }
 }
 
+/**
+ * Class Book
+ */
 class Book {
     public $id = null;
     public $title = null;
@@ -59,6 +68,7 @@ class Book {
     public $wrong_isbn = null;
 
     public $ISBN = null;
+    public $is_defined_flag = null;
 
     /**
      * Book constructor.
@@ -75,5 +85,19 @@ class Book {
         $this->wrong_isbn = $result_set->isbn_wrong;
 
         $this->ISBN = new ISBN($this->description);
+        $this->is_defined($result_set);
+    }
+
+
+    /**
+     * @param $result_set
+     * @description The function returning true if passed $isbn already set in $result_set ($isbn2, $isbn3, $isbn4)
+     * @return boolean
+     */
+    private function is_defined($result_set) {
+        $ISBN2 = new ISBN($result_set->isbn2); $ISBN3 = new ISBN($result_set->isbn3); $ISBN4 = new ISBN($result_set->isbn4);
+        $this->is_defined_flag = ($this->ISBN->isbn_string == $ISBN2->isbn_string ||
+                             $this->ISBN->isbn_string == $ISBN3->isbn_string ||
+                             $this->ISBN->isbn_string == $ISBN4->isbn_string);
     }
 }
