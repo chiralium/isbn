@@ -103,8 +103,8 @@ class Book {
 
     /**
      * @param $result_set
-     * @description The function returning true if passed $isbn already set in $result_set ($isbn2, $isbn3, $isbn4)
-     * @return boolean
+     * @description The function is change the attr. is_defined_flag & defined_by if the ISBN is already defined in result set
+     * @return null
      */
     private function is_defined($result_set) {
         $ISBN2 = new ISBN($result_set->isbn2); $ISBN3 = new ISBN($result_set->isbn3); $ISBN4 = new ISBN($result_set->isbn4);

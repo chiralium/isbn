@@ -4,7 +4,7 @@
 
     function read_table() {
         $db = new DB("127.0.0.1", "root", "");
-        $books = $db->execute_query("SELECT * FROM isnb.books");
+        $books = $db->execute_query("SELECT * FROM isnb.books WHERE description_ru RLIKE '[0-9]+'"); // getting a rows which contained numbers
 
         $BOOKS = array();
         foreach ($books as $book) {
@@ -29,7 +29,8 @@
     }
 
     function set_wrong_isbn($BOOK, $isbn_code) {
-        $BOOK->wrong_isbn .= ", $isbn_code";
+        $comma = (!empty($BOOK->wrong_isbn)) ? ', ' : '';
+        $BOOK->wrong_isbn .= $comma . $isbn_code;
     }
 
     function get_data() {
