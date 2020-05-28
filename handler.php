@@ -1,6 +1,6 @@
 <?php
     require_once("./lib/main.php");
-
+    if (!isset($_GET['g'])) header("Location: ./");
     if ($_GET['g'] == 'row') {
         header("Content-Type: application/json");
         $json = get_data();
