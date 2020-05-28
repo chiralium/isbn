@@ -15,12 +15,40 @@
         return $BOOKS;
     }
 
+    function set_new_isbn($BOOK, $isbn_code) {
+        if (!is_null($BOOK->isbn2)) {
+            $BOOK->isbn2 = $isbn_code;
+            return "ISBN_2";
+        } elseif (!is_null($BOOK->isbn3)) {
+            $BOOK->isbn3 = $isbn_code;
+            return "ISBN_3";
+        } else {
+            $BOOK->isbn4 .= ", $isbn_code";
+            return "ISBN_4";
+        }
+    }
+
+    function set_wrong_isbn($BOOK, $isbn_code) {
+        $BOOK->wrong_isbn .= ", $isbn_code";
+    }
+
     function get_data() {
         // create the output json-object
         $BOOKS = read_table();
         $json_object = array(); $id = 1;
 
         foreach ($BOOKS as $BOOK) {
+            if ($BOOK->is_defined_flag) {
+                $collname = $BOOK->defined_by;
+                $json_object[$id]['action'] = "<span style='color: blue'>ISBN был определен в одном из столбцов <b>($collname)</b></span>";
+            } elseif ($BOOK->ISBN->is_valid && $BOOK->ISBN->is_standard_delimiter) {
+                $collname = set_new_isbn($BOOK, $BOOK->ISBN->isbn_string);
+                $json_object[$id]['action'] = "<span style='color: green'>ISBN перемещен в другой столбец <b>($collname)</b></span>";
+            } else {
+                set_wrong_isbn($BOOK, $BOOK->ISBN->isbn_string);
+                $json_object[$id]['action'] = '<span style="color: red">ISBN отмечен как неверный</span>';
+            }
+
             $json_object[$id]['id'] = $id;
             $json_object[$id]['title'] = $BOOK->title;
             $json_object[$id]['description'] = $BOOK->description;
@@ -28,10 +56,8 @@
             $json_object[$id]['isbn2'] = $BOOK->isbn2;
             $json_object[$id]['isbn3'] = $BOOK->isbn3;
             $json_object[$id]['isbn4'] = $BOOK->isbn4;
-            if ($BOOK->is_defined_flag) $json_object[$id]['action'] = 'ISBN был определен в одном из столбцов';
-            elseif ($BOOK->ISBN->is_valid && $BOOK->ISBN->is_standard_delimiter) $json_object[$id]['action'] = 'ISBN перемещен в другой столбец';
-            else $json_object[$id]['action'] = 'ISBN отмечен как неверный';
-
+            $json_object[$id]['isbn_wrong'] = $BOOK->wrong_isbn;
+            $json_object[$id]['potential'] = $BOOK->ISBN->isbn_string;
             $id++;
         }
         return json_encode($json_object, JSON_UNESCAPED_UNICODE);

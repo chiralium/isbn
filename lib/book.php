@@ -80,6 +80,7 @@ class Book {
 
     public $ISBN = null;
     public $is_defined_flag = null;
+    public $defined_by = null;
 
     /**
      * Book constructor.
@@ -107,8 +108,8 @@ class Book {
      */
     private function is_defined($result_set) {
         $ISBN2 = new ISBN($result_set->isbn2); $ISBN3 = new ISBN($result_set->isbn3); $ISBN4 = new ISBN($result_set->isbn4);
-        $this->is_defined_flag = ($this->ISBN->isbn_string == $ISBN2->isbn_string ||
-                             $this->ISBN->isbn_string == $ISBN3->isbn_string ||
-                             $this->ISBN->isbn_string == $ISBN4->isbn_string);
+        if ($this->is_defined_flag = $this->ISBN->isbn_string == $ISBN2->isbn_string) $this->defined_by = "ISBN_2";
+        elseif ($this->is_defined_flag = $this->ISBN->isbn_string == $ISBN3->isbn_string) $this->defined_by = "ISBN_3";
+        elseif ($this->is_defined_flag = $this->ISBN->isbn_string == $ISBN4->isbn_string) $this->defined_by = "ISBN_4";
     }
 }
