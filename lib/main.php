@@ -4,7 +4,7 @@
 
     function read_table() {
         $db = new DB("127.0.0.1", "root", "");
-        $books = $db->execute_query("SELECT * FROM catalogdpo.books");
+        $books = $db->execute_query("SELECT * FROM isnb.books");
 
         $BOOKS = array();
         foreach ($books as $book) {

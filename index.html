@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Report</title>
+    <link rel="stylesheet" href="./css/footable.bootstrap.css">
+    <link rel="stylesheet" href="./css/footable.core.standalone.css">
+
+    <script src="https://momentjs.com/downloads/moment.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="./js/footable.min.js"></script>
+</head>
+<body>
+    <table class="table" data-paging="true"></table>>
+    <script>
+        jQuery(function($){
+            $('.table').footable({
+                "columns": $.get('handler.php?g=col'),
+                "rows": $.get('handler.php?g=row')
+            });
+        });
+    </script>
+</body>
+</html>

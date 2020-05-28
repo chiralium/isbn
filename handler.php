@@ -8,7 +8,7 @@
     } elseif ($_GET['g'] == 'col') {
         $coll_structure = '
                             [
-                                {"name": "id", "title": "ID", "breakpoints": "xs sm", "type": "number", "style": {"width": 80, "maxWidth": 80}},
+                                {"name": "id", "title": "ID"},
                                 {"name": "title", "title": "Заголовок"},
                                 {"name": "description", "title": "Описание"},
                                 {"name": "isbn", "title": "ISBN"},
