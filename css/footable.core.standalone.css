@@ -632,7 +632,7 @@ table.footable > tbody > tr.footable-detail-row > th {
 	box-sizing: border-box;
 }
 .fooicon-loader:before {
-	content: "\f01e";
+	content: "~";
 }
 .fooicon-plus:before {
 	content: "\f067";
