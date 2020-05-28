@@ -25,9 +25,9 @@
             $json_object[$id]['title'] = $BOOK->title;
             $json_object[$id]['description'] = $BOOK->description;
             $json_object[$id]['isbn'] = $BOOK->isbn;
-            $json_object[$id]['isbn2'] = $BOOK->isb2;
-            $json_object[$id]['isbn3'] = $BOOK->isb3;
-            $json_object[$id]['isbn4'] = $BOOK->isb4;
+            $json_object[$id]['isbn2'] = $BOOK->isbn2;
+            $json_object[$id]['isbn3'] = $BOOK->isbn3;
+            $json_object[$id]['isbn4'] = $BOOK->isbn4;
             if ($BOOK->is_defined_flag) $json_object[$id]['action'] = 'ISBN был определен в одном из столбцов';
             elseif ($BOOK->ISBN->is_valid && $BOOK->ISBN->is_standard_delimiter) $json_object[$id]['action'] = 'ISBN перемещен в другой столбец';
             else $json_object[$id]['action'] = 'ISBN отмечен как неверный';

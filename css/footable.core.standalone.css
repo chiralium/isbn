@@ -632,7 +632,7 @@ table.footable > tbody > tr.footable-detail-row > th {
 	box-sizing: border-box;
 }
 .fooicon-loader:before {
-	content: "~";
+	content: "⟳";
 }
 .fooicon-plus:before {
 	content: "\f067";
@@ -641,19 +641,19 @@ table.footable > tbody > tr.footable-detail-row > th {
 	content: "\f068";
 }
 .fooicon-search:before {
-	content: "\f002";
+	content: "🔍";
 }
 .fooicon-remove:before {
 	content: "\f00d";
 }
 .fooicon-sort:before {
-	content: "\f0dc";
+	content: "○";
 }
 .fooicon-sort-asc:before {
-	content: "\f160";
+	content: "⇧";
 }
 .fooicon-sort-desc:before {
-	content: "\f161";
+	content: "⇩";
 }
 .fooicon-pencil:before {
 	content: "\f040";
