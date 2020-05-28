@@ -9,6 +9,7 @@ class ISBN {
     public $is_valid = null;
     public $type = null;
     public $isbn_string = null;
+    public $is_standard_delimiter = null;
 
     /**
      * ISBN constructor.
@@ -39,17 +40,21 @@ class ISBN {
         $this->sum = $checksum;
     }
 
+    private function get_delimiter($matches) {
+        $string = implode('', $matches);
+        for ($i = 0; $i < strlen($string); $i++) {
+            if (!is_numeric($string[$i]) && $string[$i] != '-') {
+                $this->is_standard_delimiter = false;
+                break;
+            } else $this->is_standard_delimiter = true;
+        }
+    }
+
     private function extract_isbn($string) {
-        $regex = '~([0-9]+)((.+)|(?:.+))([0-9]+)~';
+        $regex = '~([0-9]+)((.+)|(?:.+))([0-9]+)(.+)~';
         $matches = array();
         if (preg_match_all($regex, $string, $matches)) {
-            $isbn_string = "";
-            echo "<div style='padding: 5px; margin: 5px; width: 1080px; height: auto; border: 2px solid'>";
-            echo "<div style='padding: 5px; margin: 5px; width: 700px; height: auto; border: 2px solid green'>";
-            echo $string;
-            echo "</div>";
-            var_dump($matches[0]);
-            echo "</div>";
+            $isbn_string = ""; $this->get_delimiter($matches[0]);
             foreach ($matches[0] as $substring) {
                 for ($counter = 0; $counter < strlen($substring); $counter++) is_numeric($substring[$counter]) ? $isbn_string .= $substring[$counter] : NULL;
             }
