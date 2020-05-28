@@ -9,6 +9,7 @@
         $coll_structure = '
                             [
                                 {"name": "id", "title": "ID"},
+                                {"name": "inner_id", "title": "#"},
                                 {"name": "title", "title": "Заголовок"},
                                 {"name": "description", "title": "Описание"},
                                 {"name": "isbn", "title": "ISBN"},
@@ -22,6 +23,4 @@
                       ';
         header("Content-Type: application/json");
         echo $coll_structure;
-    } else {
-        echo 404;
-    }
+    } else echo 404;

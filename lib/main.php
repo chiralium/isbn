@@ -2,6 +2,10 @@
     require_once("book.php");
     require_once("db.php");
 
+/**
+ * @return array
+ * @description read the data from table and compose BOOK object for each rows; store each object in array
+ */
     function read_table() {
         $db = new DB("127.0.0.1", "root", "");
         $books = $db->execute_query("SELECT * FROM isnb.books WHERE description_ru RLIKE '[0-9]+'"); // getting a rows which contained numbers
@@ -15,6 +19,12 @@
         return $BOOKS;
     }
 
+/**
+ * @param $BOOK
+ * @param $isbn_code
+ * @return string
+ * @description check the isbn field and set passed isbn_code to the empty field; return field name
+ */
     function set_new_isbn($BOOK, $isbn_code) {
         if (!is_null($BOOK->isbn2)) {
             $BOOK->isbn2 = $isbn_code;
@@ -28,13 +38,23 @@
         }
     }
 
+/**
+ * @param $BOOK
+ * @param $isbn_code
+ * @description set the wrong isbn_code to the corresponding field
+ */
     function set_wrong_isbn($BOOK, $isbn_code) {
         $comma = (!empty($BOOK->wrong_isbn)) ? ', ' : '';
         $BOOK->wrong_isbn .= $comma . $isbn_code;
     }
 
+/**
+ * @return false|string
+ * @description getting data from BOOK-array and encode it to the JSON; change the each book-object by orders
+ */
     function get_data() {
         // create the output json-object
+        global $BOOKS;
         $BOOKS = read_table();
         $json_object = array(); $id = 1;
 
@@ -50,7 +70,8 @@
                 $json_object[$id]['action'] = '<span style="color: red">ISBN отмечен как неверный</span>';
             }
 
-            $json_object[$id]['id'] = $id;
+            $json_object[$id]['inner_id'] = $id;
+            $json_object[$id]['id'] = $BOOK->id;
             $json_object[$id]['title'] = $BOOK->title;
             $json_object[$id]['description'] = $BOOK->description;
             $json_object[$id]['isbn'] = $BOOK->isbn;
@@ -61,5 +82,24 @@
             $json_object[$id]['potential'] = $BOOK->ISBN->isbn_string;
             $id++;
         }
+        commit_changes($BOOKS);
         return json_encode($json_object, JSON_UNESCAPED_UNICODE);
+    }
+
+/**
+ * @param $BOOKS
+ * @description compose the UPDATE statement and execute it to update copied table
+ */
+    function commit_changes($BOOKS) {
+        // create the copy of original table
+        $db = new DB("127.0.0.1", "root", "");
+        $db->execute_query("DROP TABLE IF EXISTS isnb.copied_books");
+        $db->execute_query("CREATE TABLE isnb.copied_books AS (SELECT * FROM isnb.books)");
+
+        // commit the changes into copied table
+        $update_template = "UPDATE isnb.copied_books SET %s WHERE id = %s";
+        foreach ($BOOKS as $BOOK) {
+            $set_template = "isbn2 = '$BOOK->isbn2', isbn3 = '$BOOK->isbn3', isbn4 = '$BOOK->isbn4', isbn_wrong = '$BOOK->wrong_isbn'";
+            $db->execute_query(sprintf($update_template, $set_template, $BOOK->id));
+        }
     }

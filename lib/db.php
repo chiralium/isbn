@@ -24,7 +24,8 @@ class DB {
      */
         function execute_query($query) {
             $rows = array();
-            if ($result = $this->connection->query($query)) {
+            $result = $this->connection->query($query);
+            if ($result && !is_bool($result)) {
                 while ($row = $result->fetch_object()) $rows[] = $row;
                 $result->close();
             }
