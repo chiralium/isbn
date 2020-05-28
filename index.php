@@ -11,9 +11,9 @@
         // getting only 10 and 13 type
         if ($BOOK->ISBN->type == 10 || $BOOK->ISBN->type == 13) {
             echo "<div style='padding: 5px; margin: 5px; width: 1080px; height: auto; border: 2px solid red'>";
-            echo "SRC: $book->description_ru<br><br><br>";
-            echo "ISBN: "; var_dump($BOOK->ISBN); echo "<br><br><br>";
-            echo "ALREADY SET: "; var_dump($BOOK->is_defined_flag);  echo "<br><br><br>";
+                echo "SRC: $book->description_ru<br><br><br>";
+                echo "ISBN: "; var_dump($BOOK->ISBN); echo "<br><br><br>";
+                echo "ALREADY SET: "; var_dump($BOOK->is_defined_flag);  echo "<br><br><br>";
             echo "</div>";
             $BOOKS[] = $BOOK;
         }
